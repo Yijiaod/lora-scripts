@@ -3,6 +3,7 @@
 # Train data path | 设置训练用模型、图片
 pretrained_model="./sd-models/model.safetensors" # base model path | 底模路径
 train_data_dir="./train/aki" # train dataset path | 训练数据集路径
+reg_data_dir="" # directory for regularization images | 正则化数据集路径，默认不使用正则化图像。
 
 # Train related params | 训练相关参数
 resolution="512,640" # image resolution w,h. 图片分辨率，宽,高。支持非正方形，但必须是 64 倍数。
@@ -21,6 +22,7 @@ unet_lr="1e-4"
 text_encoder_lr="1e-5"
 lr_scheduler="cosine_with_restarts" # "linear", "cosine", "cosine_with_restarts", "polynomial", "constant", "constant_with_warmup"
 lr_warmup_steps=0 # warmup steps | 仅在 lr_scheduler 为 constant_with_warmup 时需要填写这个值
+lr_restart_cycles=1 # cosine_with_restarts restart cycles | 余弦退火重启次数，仅在 lr_scheduler 为 cosine_with_restarts 时起效。
 
 # Output settings | 输出设置
 output_name="aki" # output model name | 模型保存名称
@@ -49,6 +51,8 @@ if [ $train_text_encoder_only == 1 ]; then extArgs+=("--network_train_text_encod
 
 if [ $network_weights ]; then extArgs+=("--network_weights $network_weights"); fi
 
+if [ $reg_data_dir ]; then extArgs+=("--reg_data_dir $reg_data_dir"); fi
+
 if [ $use_8bit_adam == 1 ]; then extArgs+=("--use_8bit_adam"); fi
 
 if [ $use_lion == 1 ]; then extArgs+=("--use_lion_optimizer"); fi
@@ -69,6 +73,7 @@ accelerate launch --num_cpu_threads_per_process=8 "./sd-scripts/train_network.py
   --text_encoder_lr=$text_encoder_lr \
   --lr_scheduler=$lr_scheduler \
   --lr_warmup_steps=$lr_warmup_steps \
+  --lr_scheduler_num_cycles=$lr_restart_cycles \
   --network_dim=$network_dim \
   --network_alpha=$network_alpha \
   --output_name=$output_name \
