@@ -2,7 +2,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 echo "Installing deps..."
-cd ./sd-scripts
+cd /content/lora-scripts/sd-scripts
 pip install torch torchvision --index-url https://download.pytorch.org/whl/nightly/cu118
 pip install --upgrade -r requirements.txt
 pip install git+https://github.com/facebookresearch/xformers.git@b89a4935c7dec6ecbfc565002c6f90189fafea8b
