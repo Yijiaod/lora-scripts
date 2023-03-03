@@ -5,7 +5,7 @@ echo "Installing deps..."
 cd ./sd-scripts
 pip install torch torchvision --index-url https://download.pytorch.org/whl/nightly/cu118
 pip install --upgrade -r requirements.txt
-pip install git+https://github.com/facebookresearch/xformers.git@0bad001ddd56c080524d37c84ff58d9cd030ebfd
+pip install git+https://github.com/facebookresearch/xformers.git@b89a4935c7dec6ecbfc565002c6f90189fafea8b
 pip install triton==2.0.0.dev20221202
 pip install --upgrade lion-pytorch
 
